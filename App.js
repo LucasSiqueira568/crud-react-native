@@ -1,21 +1,69 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+// import {Button} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+
+import UserList from './src/components/UserList'
+import UserForm from './src/components/UserForm'
+import { Button, Icon } from 'react-native-elements';
+import { UserProvider } from './src/Context/UsersContext';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <UserProvider>
+
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="UserList"
+        screenOptions={screnOptions}
+        >
+
+        <Stack.Screen
+          name="UserList"
+          component={UserList}
+          options={({ navigation }) => {
+            return {
+              title: "Lista de usuários",
+              headerRight: () => (
+                <Button
+                onPress={() => navigation.navigate('UserForm')}
+                type="clear"
+                icon={<Icon name="add" size={25} color="white" />}
+                />
+                
+                )
+              }
+              
+            }
+          }
+          
+          />
+        <Stack.Screen
+          name="UserForm"
+          component={UserForm}
+          options={{
+            title: "Formulário de Cadastro"
+            
+          }}
+          
+          />
+
+
+      </Stack.Navigator>
+    </NavigationContainer>
+          </UserProvider>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const screnOptions = {
+  headerStyle: {
+    backgroundColor: '#0077b6'
   },
-});
+  headerTintColor: '#FFF',
+  headerTitleStyle: {
+    fontWeight: 'bold'
+  }
+}
+
